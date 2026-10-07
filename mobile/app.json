@@ -4,6 +4,22 @@
     "slug": "project-management-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark"
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0b1020",
+    "splash": {
+      "backgroundColor": "#0b1020",
+      "resizeMode": "contain"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "42bad694-9192-480b-9fdf-190fd9403701"
+      }
+    },
+    "android": {
+      "package": "com.gensine.projectmanagement",
+      "adaptiveIcon": {
+        "backgroundColor": "#0b1020"
+      }
+    }
   }
 }
