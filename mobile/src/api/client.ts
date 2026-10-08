@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { tokenStorage } from '../storage/tokenStorage';
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.0.2.2:8000/api';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://promange-back.onrender.com/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
