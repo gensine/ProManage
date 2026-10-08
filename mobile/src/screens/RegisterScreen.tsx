@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 
@@ -51,6 +52,11 @@ export const RegisterScreen = ({ navigation }: any) => {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
+          <Image 
+            source={require('../../assets/logo.png')} 
+            style={{ width: 68, height: 68, borderRadius: 16, marginBottom: 14 }}
+            resizeMode="contain"
+          />
           <Text style={styles.logoText}>Task<Text style={styles.logoAccent}>Pulse</Text></Text>
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>Sign up to organize your workspace</Text>

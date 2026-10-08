@@ -7,6 +7,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { apiClient } from '../api/client';
@@ -51,9 +52,11 @@ export const DashboardScreen = ({ navigation }: any) => {
       {/* Top Header */}
       <View style={styles.topBar}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <View style={styles.avatarCircle}>
-            <Text style={styles.avatarText}>{user?.fullName?.charAt(0) || 'U'}</Text>
-          </View>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={{ width: 38, height: 38, borderRadius: 10 }}
+            resizeMode="contain"
+          />
           <View>
             <Text style={styles.greetingText}>{user?.fullName}</Text>
             <Text style={styles.subGreeting}>Workspace Dashboard</Text>

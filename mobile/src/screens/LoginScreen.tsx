@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 
@@ -48,9 +49,11 @@ export const LoginScreen = ({ navigation }: any) => {
         <View style={styles.glowCircle} />
 
         <View style={styles.header}>
-          <View style={styles.logoBadge}>
-            <Text style={styles.logoIcon}>⚡</Text>
-          </View>
+          <Image 
+            source={require('../../assets/logo.png')} 
+            style={{ width: 72, height: 72, borderRadius: 18, marginBottom: 14 }}
+            resizeMode="contain"
+          />
           <Text style={styles.logoText}>Task<Text style={styles.logoAccent}>Pulse</Text></Text>
           <Text style={styles.title}>Welcome Back</Text>
           <Text style={styles.subtitle}>Sign in to access your projects and tasks</Text>
@@ -124,7 +127,6 @@ const styles = StyleSheet.create({
     height: 260,
     borderRadius: 130,
     backgroundColor: 'rgba(124, 58, 237, 0.18)',
-    filter: 'blur(50px)',
   },
   header: {
     alignItems: 'center',

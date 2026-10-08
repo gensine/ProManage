@@ -11,7 +11,7 @@ import {
   TextInput,
 } from 'react-native';
 import { apiClient } from '../api/client';
-import { Project, Task, TaskPriority, TaskStatus } from '../types';
+import { Project, ProjectStatus, Task, TaskPriority, TaskStatus } from '../types';
 
 export const ProjectDetailScreen = ({ route, navigation }: any) => {
   const { projectId } = route.params;
@@ -55,6 +55,16 @@ export const ProjectDetailScreen = ({ route, navigation }: any) => {
     fetchDetails();
   };
 
+  const handleUpdateProjectStatus = async (newStatus: ProjectStatus) => {
+    if (!project) return;
+    try {
+      const res = await apiClient.put<Project>(`/projects/${project.id}`, { status: newStatus });
+      setProject(res.data);
+    } catch (err: any) {
+      setErrorMsg('Failed to update project status');
+    }
+  };
+
   const handleCreateTask = async () => {
     if (!taskName.trim()) return;
     setIsTaskSubmitting(true);
@@ -69,6 +79,7 @@ export const ProjectDetailScreen = ({ route, navigation }: any) => {
       setIsTaskModalOpen(false);
       setTaskName('');
       setTaskDescription('');
+      setTaskPriority('MEDIUM');
       fetchDetails();
     } catch (err: any) {
       setErrorMsg(err.response?.data?.error?.message || 'Failed to create task');
@@ -135,6 +146,32 @@ export const ProjectDetailScreen = ({ route, navigation }: any) => {
           {project.description ? (
             <Text style={styles.projectDesc}>{project.description}</Text>
           ) : null}
+
+          {/* Project Status Selector */}
+          <Text style={styles.statusLabel}>PROJECT STATUS:</Text>
+          <View style={styles.statusSelector}>
+            {(['NOT_STARTED', 'IN_PROGRESS', 'COMPLETED'] as ProjectStatus[]).map((s) => {
+              const isActive = project.status === s;
+              const label = s === 'NOT_STARTED' ? 'NOT STARTED' : s === 'IN_PROGRESS' ? 'IN PROGRESS' : 'COMPLETED';
+              return (
+                <TouchableOpacity
+                  key={s}
+                  style={[
+                    styles.statusBtn,
+                    s === 'NOT_STARTED' && styles.statusNotStarted,
+                    s === 'IN_PROGRESS' && styles.statusInProgress,
+                    s === 'COMPLETED' && styles.statusCompleted,
+                    isActive && styles.statusBtnActive,
+                  ]}
+                  onPress={() => handleUpdateProjectStatus(s)}
+                >
+                  <Text style={[styles.statusBtnText, isActive && styles.statusBtnTextActive]}>
+                    {isActive ? `✓ ${label}` : label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
       )}
 
@@ -186,6 +223,39 @@ export const ProjectDetailScreen = ({ route, navigation }: any) => {
               onChangeText={setTaskDescription}
             />
 
+            {/* Task Priority Selector */}
+            <Text style={styles.label}>PRIORITY</Text>
+            <View style={styles.prioritySelectorRow}>
+              {(['LOW', 'MEDIUM', 'HIGH'] as TaskPriority[]).map((p) => {
+                const isSelected = taskPriority === p;
+                return (
+                  <TouchableOpacity
+                    key={p}
+                    style={[
+                      styles.priorityOptionBtn,
+                      p === 'LOW' && styles.pLowBtn,
+                      p === 'MEDIUM' && styles.pMedBtn,
+                      p === 'HIGH' && styles.pHighBtn,
+                      isSelected && styles.priorityOptionSelected,
+                    ]}
+                    onPress={() => setTaskPriority(p)}
+                  >
+                    <Text
+                      style={[
+                        styles.priorityOptionText,
+                        p === 'LOW' && { color: '#94a3b8' },
+                        p === 'MEDIUM' && { color: '#f59e0b' },
+                        p === 'HIGH' && { color: '#f43f5e' },
+                        isSelected && { fontWeight: '800', color: '#ffffff' },
+                      ]}
+                    >
+                      {isSelected ? `✓ ${p}` : p}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
             <View style={styles.modalActions}>
               <TouchableOpacity style={styles.cancelBtn} onPress={() => setIsTaskModalOpen(false)}>
                 <Text style={styles.cancelBtnText}>Cancel</Text>
@@ -204,6 +274,7 @@ export const ProjectDetailScreen = ({ route, navigation }: any) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -410,4 +481,78 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '700',
   },
+  statusLabel: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#94a3b8',
+    letterSpacing: 1,
+    marginTop: 14,
+    marginBottom: 8,
+  },
+  statusSelector: {
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  statusBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: '#0b0f19',
+  },
+  statusNotStarted: {
+    borderColor: 'rgba(148, 163, 184, 0.3)',
+  },
+  statusInProgress: {
+    borderColor: 'rgba(6, 182, 212, 0.3)',
+  },
+  statusCompleted: {
+    borderColor: 'rgba(16, 185, 129, 0.3)',
+  },
+  statusBtnActive: {
+    backgroundColor: '#7c3aed',
+    borderColor: '#7c3aed',
+  },
+  statusBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#94a3b8',
+  },
+  statusBtnTextActive: {
+    color: '#ffffff',
+  },
+  prioritySelectorRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 6,
+  },
+  priorityOptionBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: '#0b0f19',
+  },
+  pLowBtn: {
+    borderColor: 'rgba(148, 163, 184, 0.3)',
+  },
+  pMedBtn: {
+    borderColor: 'rgba(245, 158, 11, 0.3)',
+  },
+  pHighBtn: {
+    borderColor: 'rgba(244, 63, 94, 0.3)',
+  },
+  priorityOptionSelected: {
+    backgroundColor: '#7c3aed',
+    borderColor: '#7c3aed',
+  },
+  priorityOptionText: {
+    fontSize: 12,
+    fontWeight: '700',
+  },
 });
+
