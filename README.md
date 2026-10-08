@@ -12,6 +12,11 @@ A production-grade monorepo featuring a **FastAPI REST Backend**, **PostgreSQL D
 
 ---
 
+## 📹 Screen Recording / Demo Video
+* **5-Minute Demo Video**: `[Insert your Loom / YouTube / Google Drive Video Link Here]`
+
+---
+
 ## 📋 Table of Contents
 1. [Architecture & ER Schema](#-architecture--er-schema)
 2. [Environment Variables Reference](#-environment-variables-reference)
