@@ -4,6 +4,14 @@ A production-grade monorepo featuring a **FastAPI REST Backend**, **PostgreSQL D
 
 ---
 
+## 🌐 Live Deployment Links
+* **Web App (Vercel)**: [https://promanage.vercel.app](https://promanage.vercel.app)
+* **Backend API (Render)**: [https://promange-back.onrender.com](https://promange-back.onrender.com)
+* **API Documentation (Swagger UI)**: [https://promange-back.onrender.com/docs](https://promange-back.onrender.com/docs)
+* **Android Standalone APK**: [TaskPulse-Standalone.apk](https://github.com/gensine/ProManage/raw/main/TaskPulse-Standalone.apk)
+
+---
+
 ## 📋 Table of Contents
 1. [Architecture & ER Schema](#-architecture--er-schema)
 2. [Environment Variables Reference](#-environment-variables-reference)
